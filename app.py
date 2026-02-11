@@ -30,30 +30,32 @@ if uploaded_file is not None:
             tfidf_matrix = vectorizer.fit_transform(semua_judul)
 
             similarity = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
-            skor = similarity.flatten() * 100
+            skor = similarity.flatten() * 100  # masih dalam bentuk angka
 
+            # Buat DataFrame dengan skor angka dulu
             hasil = pd.DataFrame({
                 "Judul Skripsi Lama": data["judul"],
                 "Tahun": data["tahun"],
                 "Prodi": data["prodi"],
-                "Skor Kemiripan": [f"{s:.2f}%" for s in skor]
+                "Skor Kemiripan": skor
             })
 
+            # Urutkan dari skor tertinggi ke terendah
             hasil = hasil.sort_values(
-                by=["Skor Kemiripan", "Tahun"],
-                ascending=[False, True]
+                by="Skor Kemiripan",
+                ascending=False
             ).reset_index(drop=True)
+
+            # Tambahkan tanda %
+            hasil["Skor Kemiripan"] = hasil["Skor Kemiripan"].round(2).astype(str) + "%"
 
             st.subheader("Hasil Kemiripan")
 
             # Rata tengah semua kolom
-            styled = hasil.style.set_properties(**{
-                'text-align': 'center'
-            })
-
-            styled = styled.set_table_styles([
-                dict(selector='th', props=[('text-align', 'center')])
-            ])
+            styled = hasil.style.set_properties(**{'text-align': 'center'})
+            styled = styled.set_table_styles(
+                [dict(selector='th', props=[('text-align', 'center')])]
+            )
 
             st.dataframe(styled, use_container_width=True, hide_index=True)
 
