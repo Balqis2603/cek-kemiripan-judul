@@ -35,7 +35,7 @@ if uploaded_file is not None:
             })
 
             hasil = hasil.sort_values(
-                by=["Skor Kemiripan (%)", "Tahun"],
+                by=["Skor Kemiripan", "Tahun"],
                 ascending=[False, True]
             ).reset_index(drop=True)
 
@@ -48,6 +48,7 @@ if uploaded_file is not None:
 
         else:
             st.warning("Masukkan judul terlebih dahulu.")
+
 
 
 
