@@ -1,4 +1,3 @@
-%%writefile app.py
 import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -7,15 +6,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 st.set_page_config(page_title="Deteksi Kemiripan Judul Skripsi", layout="wide")
 
 st.title("Sistem Pengecekan Kemiripan Judul Skripsi")
-st.write("Upload dataset judul skripsi dan masukkan judul baru untuk mengecek tingkat kemiripan.")
 
-uploaded_file = st.file_uploader("Upload File CSV Dataset Judul", type=["csv"])
+uploaded_file = st.file_uploader("Upload Dataset Judul Skripsi (CSV)", type=["csv"])
 
 if uploaded_file is not None:
     data = pd.read_csv(uploaded_file)
-
     st.success("Dataset berhasil diupload")
-    st.write("Jumlah data:", len(data))
 
     judul_input = st.text_input("Masukkan Judul Skripsi Baru")
 
@@ -43,7 +39,5 @@ if uploaded_file is not None:
             )
 
             st.subheader("Hasil Kemiripan")
-            st.dataframe(hasil)
-        else:
-            st.warning("Masukkan judul terlebih dahulu")
+            st.dataframe(hasil, use_container_width=True)
 
