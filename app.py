@@ -15,7 +15,12 @@ if uploaded_file is not None:
 
     judul_input = st.text_input("Masukkan Judul Skripsi Baru")
 
-    if st.button("Cek Kemiripan"):
+    # Tombol di tengah
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
+        cek = st.button("Cek Kemiripan")
+
+    if cek:
         if judul_input.strip() != "":
 
             daftar_judul = data["judul"].tolist()
@@ -31,7 +36,7 @@ if uploaded_file is not None:
                 "Judul Skripsi Lama": data["judul"],
                 "Tahun": data["tahun"],
                 "Prodi": data["prodi"],
-                "Skor Kemiripan": skor.round(2)
+                "Skor Kemiripan": [f"{s:.2f}%" for s in skor]
             })
 
             hasil = hasil.sort_values(
@@ -39,14 +44,18 @@ if uploaded_file is not None:
                 ascending=[False, True]
             ).reset_index(drop=True)
 
-            # Tambahkan nomor urut mulai dari 1
-            hasil.index = hasil.index + 1
-            hasil.index.name = "No"
-
             st.subheader("Hasil Kemiripan")
-            st.dataframe(hasil, use_container_width=True)
+
+            # Rata tengah semua kolom
+            styled = hasil.style.set_properties(**{
+                'text-align': 'center'
+            })
+
+            styled = styled.set_table_styles([
+                dict(selector='th', props=[('text-align', 'center')])
+            ])
+
+            st.dataframe(styled, use_container_width=True, hide_index=True)
 
         else:
             st.warning("Masukkan judul terlebih dahulu.")
-
-
