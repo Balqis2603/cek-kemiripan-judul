@@ -28,10 +28,10 @@ if uploaded_file is not None:
             skor = similarity.flatten() * 100
 
             hasil = pd.DataFrame({
-                "Judul Lama": data["judul"],
-                "Tahun": data["tahun"],
-                "Prodi": data["prodi"],
-                "Skor Kemiripan (%)": skor.round(2)
+                "Judul Lama": data["Judul Skripsi Lama"],
+                "Tahun": data["Tahun"],
+                "Prodi": data["Prodi"],
+                "Skor Kemiripan": skor.round(2)
             })
 
             hasil = hasil.sort_values(
@@ -48,5 +48,6 @@ if uploaded_file is not None:
 
         else:
             st.warning("Masukkan judul terlebih dahulu.")
+
 
 
