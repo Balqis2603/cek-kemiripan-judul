@@ -13,7 +13,7 @@ if uploaded_file is not None:
     data = pd.read_csv(uploaded_file)
     st.success("Dataset berhasil diupload")
 
-    judul_input = st.text_input("Masukkan Judul Skripsi Baru")
+    judul_input = st.text_input("Judul Skripsi Baru")
 
     # Tombol di tengah
     col1, col2, col3 = st.columns([1,1,1])
@@ -61,3 +61,4 @@ if uploaded_file is not None:
 
         else:
             st.warning("Masukkan judul terlebih dahulu.")
+
