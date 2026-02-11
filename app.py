@@ -3,41 +3,58 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-st.set_page_config(page_title="Deteksi Kemiripan Judul Skripsi", layout="wide")
+st.set_page_config(page_title="Deteksi Kemiripan Judul Skripsi", layout="centered")
 
-st.title("Sistem Pengecekan Kemiripan Judul Skripsi")
+st.markdown(
+    "<h2 style='text-align: center;'>SISTEM PENGECEKAN KEMIRIPAN JUDUL SKRIPSI</h2>",
+    unsafe_allow_html=True
+)
 
-uploaded_file = st.file_uploader("Upload Dataset Judul Skripsi (CSV)", type=["csv"])
+st.write("Sistem ini menggunakan metode TF-IDF dan Cosine Similarity untuk menghitung tingkat kemiripan judul skripsi.")
 
-if uploaded_file is not None:
-    data = pd.read_csv(uploaded_file)
-    st.success("Dataset berhasil diupload")
+# Load dataset
+data = pd.read_csv("data_judul_urut_tahun.csv")
 
-    judul_input = st.text_input("Masukkan Judul Skripsi Baru")
+st.markdown("### Judul Skripsi Baru")
+judul_input = st.text_input("", placeholder="Masukkan judul skripsi yang ingin dicek...")
 
-    if st.button("Cek Kemiripan"):
-        if judul_input != "":
-            daftar_judul = data["judul"].tolist()
-            semua_judul = daftar_judul + [judul_input]
+if st.button("🔍 Cek Kemiripan"):
 
-            vectorizer = TfidfVectorizer()
-            tfidf_matrix = vectorizer.fit_transform(semua_judul)
+    if judul_input.strip() != "":
 
-            similarity = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
-            skor = similarity.flatten() * 100
+        daftar_judul = data["judul"].tolist()
+        semua_judul = daftar_judul + [judul_input]
 
-            hasil = pd.DataFrame({
-                "Judul Lama": data["judul"],
-                "Tahun": data["tahun"],
-                "Prodi": data["prodi"],
-                "Skor Kemiripan (%)": skor.round(2)
-            })
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(semua_judul)
 
-            hasil = hasil.sort_values(
-                by=["Skor Kemiripan (%)", "Tahun"],
-                ascending=[False, True]
-            )
+        similarity = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
+        skor = similarity.flatten() * 100
 
-            st.subheader("Hasil Kemiripan")
-            st.dataframe(hasil, use_container_width=True)
+        hasil = pd.DataFrame({
+            "Judul Skripsi Lama": data["judul"],
+            "Tahun": data["tahun"],
+            "Prodi": data["prodi"],
+            "Skor Kemiripan (%)": skor.round(2)
+        })
 
+        hasil = hasil.sort_values(
+            by=["Skor Kemiripan (%)", "Tahun"],
+            ascending=[False, True]
+        )
+
+        hasil = hasil.reset_index(drop=True)
+
+        st.markdown("### Hasil Kemiripan")
+
+        # Highlight skor tertinggi
+        def highlight_max(s):
+            is_max = s == s.max()
+            return ['background-color: #ffdddd' if v else '' for v in is_max]
+
+        styled = hasil.style.apply(highlight_max, subset=["Skor Kemiripan (%)"])
+
+        st.dataframe(styled, use_container_width=True)
+
+    else:
+        st.warning("Masukkan judul terlebih dahulu.")
