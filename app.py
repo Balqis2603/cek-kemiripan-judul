@@ -91,7 +91,7 @@ if uploaded_file is not None:
 
             # Menampilkan tabel hasil akhir
             st.dataframe(
-                hasil_df[['judul', 'Tahun', 'Prodi', 'Skor Kemiripan']].style.applymap(style_skor, subset=['Skor Kemiripan']),
+                hasil_df[['judul', 'tahun', 'prodi', 'Skor Kemiripan']].style.applymap(style_skor, subset=['Skor Kemiripan']),
                 use_container_width=True
             )
         else:
@@ -102,3 +102,4 @@ else:
 # --- FOOTER ---
 st.divider()
 st.caption("© 2026 Pendeteksian Plagiarisme Judul Skripsi - Teknik Komputer")
+
