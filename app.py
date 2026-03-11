@@ -22,7 +22,6 @@ if uploaded_file is not None:
         st.dataframe(df_display, use_container_width=True)
 
     st.subheader("Masukkan Judul Skripsi Baru")
-
     judul_input = st.text_input("Judul Skripsi")
 
     col1, col2, col3 = st.columns([1,1,1])
@@ -66,7 +65,7 @@ if uploaded_file is not None:
             else:
                 st.success(f"✅ Kemiripan Rendah ({skor_tertinggi:.2f}%)")
 
-            # fungsi warna skor
+            # WARNA SKOR
             def warna_skor(val):
                 if val > 70:
                     color = "red"
@@ -84,16 +83,6 @@ if uploaded_file is not None:
             })
 
             st.dataframe(styled, use_container_width=True)
-
-            # TOP 5 JUDUL PALING MIRIP
-            st.subheader("Top 5 Judul Paling Mirip")
-
-            top5 = hasil.head(5).copy()
-            top5["Skor Kemiripan"] = top5["Skor Kemiripan"].round(2).astype(str) + "%"
-
-            top5.index = range(1, len(top5)+1)
-
-            st.table(top5)
 
         else:
             st.warning("Masukkan judul terlebih dahulu")
