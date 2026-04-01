@@ -70,5 +70,4 @@ hasil["Skor Kemiripan"] = hasil["Skor Kemiripan"].map(lambda x: f"{x:.2f}%")
 
 st.dataframe(hasil, use_container_width=True)
 
-        else:
-            st.warning("Masukkan judul terlebih dahulu")
+
