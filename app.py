@@ -65,24 +65,10 @@ if uploaded_file is not None:
             else:
                 st.success(f"✅ Kemiripan Rendah ({skor_tertinggi:.2f}%)")
 
-            # WARNA SKOR
-            def warna_skor(val):
-                if val > 70:
-                    color = "red"
-                elif val > 40:
-                    color = "orange"
-                else:
-                    color = "green"
-                return f"background-color:{color}; color:white; font-weight:bold"
+           # FORMAT SKOR (AMAN TANPA STYLE)
+hasil["Skor Kemiripan"] = hasil["Skor Kemiripan"].map(lambda x: f"{x:.2f}%")
 
-            styled = hasil.style.applymap(
-                warna_skor,
-                subset=["Skor Kemiripan"]
-            ).format({
-                "Skor Kemiripan": "{:.2f}%"
-            })
-
-            st.dataframe(styled, use_container_width=True)
+st.dataframe(hasil, use_container_width=True)
 
         else:
             st.warning("Masukkan judul terlebih dahulu")
