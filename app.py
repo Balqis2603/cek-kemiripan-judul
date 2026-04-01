@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-st.set_page_config(page_title="Sistem Deteksi Kemiripan Judul Skripsi", layout="wide")
+st.set_page_config(page_title="Sistem Deteksi Kemiripan Judul Skripsi",layout="wide")
 
 st.title("🛡️ Sistem Pengecekan Kemiripan Judul Skripsi")
 st.write("Program Studi Teknik Komputer")
