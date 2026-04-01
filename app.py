@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-st.set_page_config(page_title="Sistem Deteksi Kemiripan Judul Skripsi",layout="wide")
+st.set_page_config(page_title="Sistem Deteksi Kemiripan Judul Skripsi", layout="wide")
 
 st.title("🛡️ Sistem Pengecekan Kemiripan Judul Skripsi")
 st.write("Program Studi Teknik Komputer")
@@ -24,7 +24,7 @@ if uploaded_file is not None:
     st.subheader("Masukkan Judul Skripsi Baru")
     judul_input = st.text_input("Judul Skripsi")
 
-    col1, col2, col3 = st.columns([1,1,1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         cek = st.button("🔍 Cek Kemiripan")
 
@@ -65,9 +65,12 @@ if uploaded_file is not None:
             else:
                 st.success(f"✅ Kemiripan Rendah ({skor_tertinggi:.2f}%)")
 
-           # FORMAT SKOR (AMAN TANPA STYLE)
-hasil["Skor Kemiripan"] = hasil["Skor Kemiripan"].map(lambda x: f"{x:.2f}%")
+            # FORMAT SKOR (AMAN TANPA STYLE)
+            hasil["Skor Kemiripan"] = hasil["Skor Kemiripan"].map(lambda x: f"{x:.2f}%")
 
-st.dataframe(hasil, use_container_width=True)
+            st.dataframe(hasil, use_container_width=True)
+
+        else:
+            st.warning("Masukkan judul terlebih dahulu")
 
 
